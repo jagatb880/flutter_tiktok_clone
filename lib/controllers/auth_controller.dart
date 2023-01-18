@@ -25,6 +25,14 @@ class AuthController extends GetxController {
     ever(_user, _setInitialScreen);
   }
 
+  _setInitialScreen(User? user) {
+    if (user == null) {
+      Get.offAll(() => LoginScreen());
+    } else {
+      Get.offAll(() => const HomeScreen());
+    }
+  }
+
   void pickImage() async {
     final pickedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -48,7 +56,7 @@ class AuthController extends GetxController {
     return downloadUrl;
   }
 
-  //registering the user
+  // registering the user
   void registerUser(
       String username, String email, String password, File? image) async {
     try {
@@ -56,7 +64,7 @@ class AuthController extends GetxController {
           email.isNotEmpty &&
           password.isNotEmpty &&
           image != null) {
-        //save out  user to our auth and firebase firestore
+        // save out user to our ath and firebase firestore
         UserCredential cred = await firebaseAuth.createUserWithEmailAndPassword(
           email: email,
           password: password,
@@ -74,13 +82,13 @@ class AuthController extends GetxController {
             .set(user.toJson());
       } else {
         Get.snackbar(
-          "Error Creating an Account",
-          "Please eneter all the fields",
+          'Error Creating Account',
+          'Please enter all the fields',
         );
       }
     } catch (e) {
       Get.snackbar(
-        "Error Creating an Account",
+        'Error Creating Account',
         e.toString(),
       );
     }
@@ -91,26 +99,17 @@ class AuthController extends GetxController {
       if (email.isNotEmpty && password.isNotEmpty) {
         await firebaseAuth.signInWithEmailAndPassword(
             email: email, password: password);
-        print("log success");
       } else {
         Get.snackbar(
-          "Error Creating an Account",
-          "Please eneter all the fields",
+          'Error Logging in',
+          'Please enter all the fields',
         );
       }
     } catch (e) {
       Get.snackbar(
-        "Error Logging in",
+        'Error Loggin gin',
         e.toString(),
       );
-    }
-  }
-
-  _setInitialScreen(User? user) {
-    if (user == null) {
-      Get.offAll(() => LoginScreen());
-    } else {
-      Get.offAll(() => HomeScreen());
     }
   }
 
